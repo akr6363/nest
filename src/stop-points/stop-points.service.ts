@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import fetch from 'cross-fetch';
+import {
+  EntityNamesPayloadType,
+  EntityNamesResponseType,
+  GetStopPointsMetaType,
+  getStopPointsResponseType,
+} from '../types';
 const BASE_URL = 'https://tula-test.t1-group.ru/ajax/request?com.rnis.';
 
 @Injectable()
 export class StopPointsService {
-  async getStopPoints(meta: any, payload: any) {
+  async getStopPoints(
+    meta: GetStopPointsMetaType,
+  ): Promise<getStopPointsResponseType> {
     try {
       const response = await fetch(`${BASE_URL}geo.action.stop_point.list`, {
         method: 'POST',
@@ -13,7 +21,6 @@ export class StopPointsService {
         },
         body: JSON.stringify({
           headers: { meta },
-          payload,
         }),
       });
 
@@ -23,7 +30,9 @@ export class StopPointsService {
     }
   }
 
-  async getEntityNames(meta, payload) {
+  async getEntityNames(
+    payload: EntityNamesPayloadType,
+  ): Promise<EntityNamesResponseType> {
     try {
       const response = await fetch(`${BASE_URL}system.action.entity.names`, {
         method: 'POST',
@@ -31,9 +40,6 @@ export class StopPointsService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          headers: {
-            meta: {},
-          },
           payload,
         }),
       });

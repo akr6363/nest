@@ -8,13 +8,15 @@ import {
 } from './stop-points.utils';
 import { TABLE_HEADERS } from './stop-points.constants';
 import { performance } from 'perf_hooks';
+import { GetStopPointsDataType, GetStopPointsMetaType } from '../types';
+import { Response } from 'express';
 
 @Controller('stop-points')
 export class StopPointsController {
   constructor(private readonly stopPointsService: StopPointsService) {}
 
-  async processPage(order, filters, limit, filePath, page) {
-    const meta = {
+  async processPage(order, filters, limit, filePath, page): Promise<number> {
+    const meta: GetStopPointsMetaType = {
       filters,
       order,
       pagination: {
@@ -22,9 +24,8 @@ export class StopPointsController {
         limit,
       },
     };
-    const stopPoints = await this.stopPointsService.getStopPoints(meta, {});
+    const stopPoints = await this.stopPointsService.getStopPoints(meta);
     const owners = await this.stopPointsService.getEntityNames(
-      {},
       getEntityNamesPayload(stopPoints),
     );
     const matrix = getMatrix(stopPoints, owners);
@@ -39,7 +40,10 @@ export class StopPointsController {
   }
 
   @Post()
-  async getStopPoints(@Body() data: any, @Res() res: any) {
+  async getStopPoints(
+    @Body() data: GetStopPointsDataType,
+    @Res() res: Response,
+  ): Promise<void> {
     const { order, filters, limit } = data;
     const filePath = './stop-points.xlsx';
     const start = performance.now(); // Засекаем начало выполнения запроса
@@ -66,9 +70,9 @@ export class StopPointsController {
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    res.set('Content-Disposition', 'attachment; filename=users.xlsx');
-
+    res.set('Content-Disposition', 'attachment; filename=stop-points.xlsx');
     res.sendFile('stop-points.xlsx', { root: './' });
+
     console.log(`Время выполнения запроса: ${executionTime} мс`);
   }
 }

@@ -1,21 +1,3 @@
-export const COLUMN_STYLES = {
-  blue: {
-    fill: {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FF7ED7D1' },
-    },
-  },
-  red: {
-    border: {
-      top: { style: 'thin', color: { argb: 'FFFF0000' } },
-      left: { style: 'thin', color: { argb: 'FFFF0000' } },
-      bottom: { style: 'thin', color: { argb: 'FFFF0000' } },
-      right: { style: 'thin', color: { argb: 'FFFF0000' } },
-    },
-  },
-};
-
 export const TABLE_HEADERS = {
   title: 'Наименование',
   register_number: 'Регистрационный номер',
