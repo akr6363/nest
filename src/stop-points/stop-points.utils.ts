@@ -53,9 +53,7 @@ export async function stylizeStopPointsTable(filePath) {
       cell.style = headerStyle;
     });
     const rowCount = table.rowCount;
-    // table.getRow(1).height =  19
     for (let i = 2; i <= rowCount; i++) {
-      // table.getRow(i).height =  35
       table.getRow(i).eachCell({ includeEmpty: true }, (cell) => {
         cell.border = {
           top: { style: 'medium' },

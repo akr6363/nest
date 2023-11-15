@@ -35,7 +35,6 @@ export class StopPointsController {
       Object.keys(TABLE_HEADERS),
       page === 1,
     );
-
     if (page === 1) return stopPoints.headers.meta.pagination.total;
   }
 
@@ -55,14 +54,12 @@ export class StopPointsController {
     if (totalCount > limit) {
       const totalPages = Math.ceil(totalCount / limit);
       for (let page = 2; page <= totalPages; page++) {
-        for (let page = 2; page <= totalPages; page++) {
-          await this.processPage(order, filters, limit, filePath, page);
-        }
+        await this.processPage(order, filters, limit, filePath, page);
       }
     }
     await stylizeStopPointsTable(filePath);
 
-    const end = performance.now(); // Засекаем конец выполнения запроса
+    const end = performance.now();
     const executionTime = end - start;
 
     res.set(
