@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import fetch from 'cross-fetch';
 import {
   EntityNamesPayloadType,
-  EntityNamesResponseType,
+  EntityNameType,
   GetStopPointsMetaType,
-  getStopPointsResponseType,
+  ResponseType,
+  StopPointType,
 } from '../types';
 const BASE_URL = 'https://tula-test.t1-group.ru/ajax/request?com.rnis.';
 
@@ -12,7 +13,7 @@ const BASE_URL = 'https://tula-test.t1-group.ru/ajax/request?com.rnis.';
 export class StopPointsService {
   async getStopPoints(
     meta: GetStopPointsMetaType,
-  ): Promise<getStopPointsResponseType> {
+  ): Promise<ResponseType<StopPointType[]>> {
     try {
       const response = await fetch(`${BASE_URL}geo.action.stop_point.list`, {
         method: 'POST',
@@ -24,6 +25,10 @@ export class StopPointsService {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+
       return await response.json();
     } catch (error) {
       throw new Error(`Error fetching data: ${error.message}`);
@@ -32,7 +37,7 @@ export class StopPointsService {
 
   async getEntityNames(
     payload: EntityNamesPayloadType,
-  ): Promise<EntityNamesResponseType> {
+  ): Promise<ResponseType<EntityNameType[]>> {
     try {
       const response = await fetch(`${BASE_URL}system.action.entity.names`, {
         method: 'POST',
@@ -43,6 +48,11 @@ export class StopPointsService {
           payload,
         }),
       });
+
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+
       return await response.json();
     } catch (e) {
       throw new Error(`Error fetching data: ${e.message}`);

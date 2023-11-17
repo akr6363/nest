@@ -34,7 +34,7 @@ export type StopPointType = {
   longitude: number;
 };
 
-export type getStopPointsResponseType = {
+export type ResponseType<T> = {
   success: boolean;
   headers: {
     meta: {
@@ -42,11 +42,11 @@ export type getStopPointsResponseType = {
         total: number;
         per_page: number;
         current_page: number;
-        total_pages: 11;
+        total_pages: number;
       };
     };
   };
-  payload: { items: StopPointType[] };
+  payload: { items: T };
 };
 
 export type EntityNamesPayloadType = {
@@ -56,21 +56,6 @@ export type EntityNamesPayloadType = {
     uuid: string[];
     source: string;
   };
-};
-
-export type EntityNamesResponseType = {
-  success: boolean;
-  headers: {
-    meta: {
-      pagination: {
-        total: number;
-        per_page: number;
-        current_page: number;
-        total_pages: 11;
-      };
-    };
-  };
-  payload: { items: EntityNameType[] };
 };
 
 export type EntityNameType = {

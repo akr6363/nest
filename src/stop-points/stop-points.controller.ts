@@ -15,7 +15,13 @@ import { Response } from 'express';
 export class StopPointsController {
   constructor(private readonly stopPointsService: StopPointsService) {}
 
-  async processPage(order, filters, limit, filePath, page): Promise<number> {
+  async processPage(
+    order,
+    filters,
+    limit,
+    filePath,
+    page,
+  ): Promise<number | void> {
     const meta: GetStopPointsMetaType = {
       filters,
       order,
@@ -55,7 +61,7 @@ export class StopPointsController {
       1,
     );
 
-    if (totalCount > limit) {
+    if (totalCount && totalCount > limit) {
       const totalPages = Math.ceil(totalCount / limit);
       for (let page = 2; page <= totalPages; page++) {
         await this.processPage(order, filters, limit, filePath, page);
