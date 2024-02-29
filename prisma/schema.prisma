@@ -12,4 +12,13 @@ model users {
   name      String?  @db.VarChar(255)
   last_name String?  @db.VarChar(255)
   hobbies   String[] @db.VarChar(255)
+  city_id   Int?
+  city      city?    @relation(fields: [city_id], references: [id], onDelete: Cascade, map: "city_id_fk")
+}
+
+model city {
+  id        Int     @id
+  city_name String? @db.VarChar(50)
+  count     Int?
+  users     users[]
 }
